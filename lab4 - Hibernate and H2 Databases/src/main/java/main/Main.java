@@ -16,9 +16,9 @@ public class Main {
         //deleteTower(em, "Don Gun Dur");
 
         //addMage(em, new Mage("Guacamole",12,null));
-        deleteMage(em, "Anna");
+        //deleteMage(em, "Anna");
 
-        //printDatabase(em);
+        printDatabase(em);
 
         //String sqlQuery1 = "SELECT * FROM Mages WHERE level > 50";
         //executeQuery(em, sqlQuery1);
