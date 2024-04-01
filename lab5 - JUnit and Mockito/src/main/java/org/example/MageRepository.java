@@ -5,15 +5,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 public class MageRepository {
-    private Collection<Mage> collection;
+    private Collection<MageDTO> collection;
 
     public MageRepository()
     {
-        this.collection = new ArrayList<Mage>();
+        this.collection = new ArrayList<MageDTO>();
     }
-    public Optional<Mage> find(String name)
+    public Optional<MageDTO> find(String name)
     {
-        for (Mage mage : collection)
+        for (MageDTO mage : collection)
         {
             if (mage.getName().equals(name))
             {
@@ -26,7 +26,7 @@ public class MageRepository {
     public void delete(String name)
     {
         try {
-            Mage mage = find(name).get();
+            MageDTO mage = find(name).get();
             collection.remove(mage);
         }
         catch (Exception e) {
@@ -34,9 +34,9 @@ public class MageRepository {
         }
     }
 
-    public void save(Mage mage)
+    public void save(MageDTO mage)
     {
-        Optional<Mage> existingMage = find(mage.getName());
+        Optional<MageDTO> existingMage = find(mage.getName());
         if (existingMage.isPresent()) {
             throw new IllegalArgumentException();
         }

@@ -12,8 +12,8 @@ public class MageController {
 
     public String find(String name)
     {
-        Optional<Mage> mage = repository.find(name);
-        return mage.isEmpty() ? "not found" : mage.get().toString();
+        Optional<MageDTO> mage = repository.find(name);
+        return mage.isEmpty() ? "not found" : (new Mage(mage.get())).toString();
     }
 
     public String delete(String name)
@@ -30,7 +30,7 @@ public class MageController {
     public String save(String name, int level)
     {
         try {
-            repository.save(new Mage(name, level));
+            repository.save(new MageDTO(name, level));
             return "done";
         }
         catch(IllegalArgumentException e) {

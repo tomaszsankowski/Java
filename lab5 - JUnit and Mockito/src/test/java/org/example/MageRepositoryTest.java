@@ -14,14 +14,14 @@ class MageRepositoryTest {
     @Test
     void find() {
         MageRepository mageRepository = new MageRepository();
-        mageRepository.save(new Mage("Gandalf", 100));
-        mageRepository.save(new Mage("Saruman", 99));
-        mageRepository.save(new Mage("Radagast", 0));
-        mageRepository.save(new Mage("", -100));
-        assertEquals("Mage{name='Gandalf', level=100}", mageRepository.find("Gandalf").get().toString());
-        assertEquals("Mage{name='Saruman', level=99}", mageRepository.find("Saruman").get().toString());
-        assertEquals("Mage{name='Radagast', level=0}", mageRepository.find("Radagast").get().toString());
-        assertEquals("Mage{name='', level=-100}", mageRepository.find("").get().toString());
+        mageRepository.save(new MageDTO("Gandalf", 100));
+        mageRepository.save(new MageDTO("Saruman", 99));
+        mageRepository.save(new MageDTO("Radagast", 0));
+        mageRepository.save(new MageDTO("", -100));
+        assertEquals("Mage{name='Gandalf', level=100}", (new Mage(mageRepository.find("Gandalf").get())).toString());
+        assertEquals("Mage{name='Saruman', level=99}", (new Mage(mageRepository.find("Saruman").get())).toString());
+        assertEquals("Mage{name='Radagast', level=0}", (new Mage(mageRepository.find("Radagast").get())).toString());
+        assertEquals("Mage{name='', level=-100}", (new Mage(mageRepository.find("").get())).toString());
     }
 
     @Test
@@ -36,10 +36,10 @@ class MageRepositoryTest {
     void save() {
         MageRepository mageRepository = new MageRepository();
 
-        mageRepository.save(new Mage("Gandalf", 100));
-        mageRepository.save(new Mage("Saruman", 0));
-        mageRepository.save(new Mage("Radagast", 50));
-        mageRepository.save(new Mage("", -150));
+        mageRepository.save(new MageDTO("Gandalf", 100));
+        mageRepository.save(new MageDTO("Saruman", 0));
+        mageRepository.save(new MageDTO("Radagast", 50));
+        mageRepository.save(new MageDTO("", -150));
 
         assertThat(mageRepository.find("Gandalf")).hasValueSatisfying(mage -> {
             assertThat(mage.getName()).isEqualTo("Gandalf");
@@ -64,26 +64,26 @@ class MageRepositoryTest {
     {
         MageRepository mageRepository = new MageRepository();
 
-        mageRepository.save(new Mage("Gandalf", 100));
+        mageRepository.save(new MageDTO("Gandalf", 100));
         assertThat(mageRepository.find("Gandalf")).hasValueSatisfying(mage -> {
         assertThat(mage.getName()).isEqualTo("Gandalf");
         assertThat(mage.getLevel()).isEqualTo(100);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new Mage("Gandalf", 100));});
-        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new Mage("Gandalf", 15));});
-        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new Mage("Gandalf", 0));});
-        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new Mage("Gandalf", -125));});
+        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new MageDTO("Gandalf", 100));});
+        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new MageDTO("Gandalf", 15));});
+        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new MageDTO("Gandalf", 0));});
+        assertThrows(IllegalArgumentException.class, () -> {mageRepository.save(new MageDTO("Gandalf", -125));});
     }
 
     @Test
     void delete() {
         MageRepository mageRepository = new MageRepository();
 
-        mageRepository.save(new Mage("Gandalf", 100));
-        mageRepository.save(new Mage("Saruman", 50));
-        mageRepository.save(new Mage("Radagast", 0));
-        mageRepository.save(new Mage("", -50));
+        mageRepository.save(new MageDTO("Gandalf", 100));
+        mageRepository.save(new MageDTO("Saruman", 50));
+        mageRepository.save(new MageDTO("Radagast", 0));
+        mageRepository.save(new MageDTO("", -50));
         mageRepository.delete("Gandalf");
         mageRepository.delete("Saruman");
         mageRepository.delete("Radagast");

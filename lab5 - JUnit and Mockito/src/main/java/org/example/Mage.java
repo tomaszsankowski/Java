@@ -9,6 +9,12 @@ public class Mage {
         this.level = level;
     }
 
+    public Mage(MageDTO mage)
+    {
+        this.name = mage.getName();
+        this.level = mage.getLevel();
+    }
+
     public String getName() {
         return name;
     }
@@ -31,5 +37,10 @@ public class Mage {
                 "name='" + name + '\'' +
                 ", level=" + level +
                 '}';
+    }
+
+    public void buisnessLogicFunction()
+    {
+        // protected method
     }
 }
