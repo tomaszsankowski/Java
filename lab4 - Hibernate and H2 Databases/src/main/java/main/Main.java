@@ -11,29 +11,40 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
         EntityManager em = emf.createEntityManager();
 
-        //createDatabase(em);
-
-        //deleteTower(em, "Don Gun Dur");
-
-        //addMage(em, new Mage("Guacamole",12,null));
-        //deleteMage(em, "Anna");
+        createDatabase(em);
 
         printDatabase(em);
 
-        //String sqlQuery1 = "SELECT * FROM Mages WHERE level > 50";
-        //executeQuery(em, sqlQuery1);
+        deleteTower(em, "Don Gun Dur");
 
-        //String sqlQuery2 = "SELECT * FROM Towers WHERE height < 100";
-        //executeQuery(em, sqlQuery2);
+        printDatabase(em);
 
-        //String sqlQuery3 = "SELECT m.* FROM Mages m JOIN Towers t ON m.tower_id = t.id WHERE m.level > 50 AND t.name = 'Don Gun Dur'";
-        //executeQuery(em, sqlQuery3);
+        addMage(em, new Mage("Guacamole",12,null));
+        deleteMage(em, "Anna");
+
+        printDatabase(em);
+
+        Tower t = new Tower("Don Gun Dur", 80, new ArrayList<>());
+        addTower(em, t);
+        addMage(em, new Mage("Anna", 42, t));
+        addMage(em, new Mage("Radagast", 62, t));
+        addMage(em, new Mage("Sauron", 1, t));
+
+        printDatabase(em);
+
+        String sqlQuery1 = "SELECT * FROM Mages WHERE level > 50";
+        executeQuery(em, sqlQuery1);
+
+        String sqlQuery2 = "SELECT * FROM Towers WHERE height < 100";
+        executeQuery(em, sqlQuery2);
+
+        String sqlQuery3 = "SELECT m.* FROM Mages m JOIN Towers t ON m.tower_id = t.id WHERE m.level > 50 AND t.name = 'Don Gun Dur'";
+        executeQuery(em, sqlQuery3);
 
 
         em.close();
         emf.close();
     }
-
 
     private static void deleteMage(EntityManager em, String mageName) {
         EntityTransaction tx = em.getTransaction();
