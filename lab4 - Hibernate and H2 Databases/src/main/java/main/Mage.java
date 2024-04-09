@@ -20,7 +20,10 @@ public class Mage {
 
     @Override
     public String toString() {
-        return STR."Mage{name='\{name}\{'\''}, level=\{level}\{'}'}";
+        return "Mage{" +
+                "name='" + name + '\'' +
+                ", level=" + level +
+                '}';
     }
 
     public Mage() {
