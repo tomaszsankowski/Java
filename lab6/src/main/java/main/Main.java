@@ -11,16 +11,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        String inPath = args[0], outPath = args[1];
+        String inPath = args[0];
+        String outPath = args[1];
         List<Path> files;
         Path source = Path.of(inPath);
-        try {
-            files = Files.list(source).toList();
+
+        try (Stream<Path> paths = Files.list(source)) {
+            files = paths.toList();
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -30,11 +31,9 @@ public class Main {
         {
             long time = System.currentTimeMillis();
 
-            ForkJoinPool threadPool = new ForkJoinPool(it);
-
-            threadPool.submit(() -> {
-                files.parallelStream()
-                        .map(path -> { // creating pair <filename, image>
+            try (ForkJoinPool threadPool = new ForkJoinPool(it)) {
+                threadPool.submit(() -> files.parallelStream()
+                        .map(path -> {
                             try {
                                 BufferedImage image = ImageIO.read(path.toFile());
                                 String name = path.getFileName().toString();
@@ -44,12 +43,13 @@ public class Main {
                                 return null;
                             }
                         })
-                        .map(entry -> { // converting image
+                        .map(entry -> {
                             if (entry != null) {
                                 BufferedImage original = entry.getRight();
                                 BufferedImage image = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
-                                for(int i = 0; i < original.getWidth(); i++) {
-                                    for(int j = 0; j < original.getHeight(); j++) {
+
+                                for (int i = 0; i < original.getWidth(); i++) {
+                                    for (int j = 0; j < original.getHeight(); j++) {
                                         int rgb = original.getRGB(i, j);
                                         Color color = new Color(rgb);
                                         Color outColor = new Color(color.getRed(), color.getBlue(), color.getGreen());
@@ -57,12 +57,13 @@ public class Main {
                                         image.setRGB(i, j, outRgb);
                                     }
                                 }
+
                                 return Pair.of(entry.getLeft(), image);
                             } else {
                                 return null;
                             }
                         })
-                        .forEach(entry -> { // saving converted image
+                        .forEach(entry -> {
                             if (entry != null) {
                                 try {
                                     File outputFile = new File(STR."\{outPath}/\{entry.getLeft()}");
@@ -71,14 +72,13 @@ public class Main {
                                     e.printStackTrace();
                                 }
                             }
-                        });
-            }).join();
-
-            threadPool.shutdown();
+                        })).join();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
 
             System.out.println(STR."Time: \{System.currentTimeMillis() - time} for \{it} threads");
         }
-
-
     }
 }

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>main</groupId>
-    <artifactId>lab6 - parallel processing of images</artifactId>
+    <artifactId>lab6</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
