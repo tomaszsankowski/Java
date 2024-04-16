@@ -1,4 +1,4 @@
-package main;
+package zad1;
 
 public class Banana extends Fruit {
     @Override
